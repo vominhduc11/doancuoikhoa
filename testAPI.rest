@@ -1,0 +1,15 @@
+// Comenent
+GET http://127.0.0.1:8080/dsHocsinh
+###
+GET http://127.0.0.1:8080/dsTivi
+###
+GET http://localhost:8080/IPHONE_1.png
+###
+POST http://localhost:8080/Dangnhap
+Content-Type: application/json
+
+{
+     "Ten_Dang_nhap": "NV_56",
+     "Mat_khau": "NV_3"
+}
+###

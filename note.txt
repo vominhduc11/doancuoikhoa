@@ -1,0 +1,13 @@
+npm init -y
+Tạo tập tin package.json : lưu trữ thông tin ứng dụng và các gói cài đặt
+--------------------------------------------------
+npm i
+Cài đặt tất cả các gói ứng dụng + phiên bản có trong tập tin package.json
+--------------------------------------------------
+npm i <gói cài đặt> --s
+Cài đặt gói ứng dụng + phiên bản hiện hành cho ứng dụng
+--------------------------------------------------
+
+npm uninstall <gói cài đặt>
+Gỡ cài đặt gói ứng dụng + phiên bản hiện hành cho ứng dụng
+--------------------------------------------------
