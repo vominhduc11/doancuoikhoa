@@ -26,9 +26,6 @@ function shuffleArray(s, e) {
     return array;
 }
 
-let count = 0;
-let arrPost = [];
-
 // Xây dựng Service
 const dichvu = http.createServer((req, res) => {
     let method = req.method;
@@ -65,29 +62,28 @@ const dichvu = http.createServer((req, res) => {
                         .then(result => {
 
                             // const array = shuffleArray(Number(url.slice(13)), Number(url.slice(13)) + 9);
-                            if (++count <= 1) {
-                                const array = shuffleArray(1, result.length);
-                                let array1 = array.map(element => {
-                                    return result.find(ele => ele.id === element);
-                                });
+                            const array = shuffleArray(1, result.length);
+                            let array1 = array.map(element => {
+                                return result.find(ele => ele.id === element);
+                            });
+                            let arrPost = [];
+                            array1 = array1.forEach(element => {
+                                if (element.hasOwnProperty("post")) {
+                                    element.post.forEach(ele => {
+                                        ele = {
+                                            id: element.id,
+                                            avatar: element.avatar,
+                                            name: element.name,
+                                            nickname: element.nickname,
+                                            followers: element.followers,
+                                            likes: element.likes,
+                                            ...ele
+                                        }
+                                        arrPost[arrPost.length] = ele;
+                                    })
+                                }
+                            });
 
-                                array1 = array1.forEach(element => {
-                                    if (element.hasOwnProperty("post")) {
-                                        element.post.forEach(ele => {
-                                            ele = {
-                                                id: element.id,
-                                                avatar: element.avatar,
-                                                name: element.name,
-                                                nickname: element.nickname,
-                                                followers: element.followers,
-                                                likes: element.likes,
-                                                ...ele
-                                            }
-                                            arrPost[arrPost.length] = ele;
-                                        })
-                                    }
-                                });
-                            }
 
                             arrPost = arrPost.map(element => {
                                 if (element.id >= Number(url.slice(13)) * 10 - 9 && element.id < Number(url.slice(13)) + 10) {
@@ -525,6 +521,7 @@ function saveMedia(Ten, Chuoi_nhi_phan) {
 dichvu.listen(port, () => {
     console.log(`Server Run.. http://localhost:${port}`)
 })
+
 
 
 
