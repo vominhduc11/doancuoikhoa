@@ -85,12 +85,24 @@ const dichvu = http.createServer((req, res) => {
                             });
 
 
-                            arrPost = arrPost.map(element => {
-                                if (element.id >= Number(url.slice(13)) * 10 - 9 && element.id < Number(url.slice(13)) + 10) {
-                                    return element;
+                            // arrPost = arrPost.map((element, index) => {
+                            //     // if (element.id >= Number(url.slice(13)) * 10 - 9 && element.id < Number(url.slice(13)) + 10) {
+                            //     //     return element;
+                            //     // }
+                            //     if (typeof element === 'object' && element !== null && (index + 1) >= Number(url.slice(13)) * 10 - 9 && (index + 1) <= Number(url.slice(13)) * 10) {
+                            //         return element;
+                            //     }
+                            //     return "abc";
+                            // });
+                            let arrPostNew = [];
+                            for (let index = Number(url.slice(13)) * 10 - 10; index <= Number(url.slice(13)) * 10 - 1; index++) {
+                                if (typeof arrPost[index] === 'object' && arrPost[index] !== null) {
+                                    arrPostNew[arrPostNew.length] = arrPost[index];
+                                    continue;
                                 }
-                            })
-                            kq = JSON.stringify(arrPost);
+                                continue;
+                            }
+                            kq = JSON.stringify(arrPostNew);
                             client.close();
                             res.writeHead(200, { "Content-Type": "text/json;charset=utf-8" });
                             res.end(kq);
