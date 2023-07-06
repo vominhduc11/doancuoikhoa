@@ -54,7 +54,7 @@ const dichvu = http.createServer((req, res) => {
                     console.log(err);
                 })
         }
-        else if (url.slice(0, 10) == "/api/postsFirst") {
+        else if (url.slice(0, 15) == "/api/postsFirst") {
             // console.log(shuffleArray(Number(url.slice(13)), Number(url.slice(13)) + 10));
             // { id: { $gte: Number(url.slice(13)), $lt: Number(url.slice(13)) + 10 } }
             MongoClient.connect(uri)
@@ -62,7 +62,7 @@ const dichvu = http.createServer((req, res) => {
                     client.db(dbName).collection("user").find().toArray()
                         .then(result => {
 
-                            // const array = shuffleArray(Number(url.slice(13)), Number(url.slice(13)) + 9);
+                            // const array = shuffleArray(Number(url.slice(18)), Number(url.slice(18)) + 9);
                             const array = shuffleArray(1, result.length);
                             let array1 = array.map(element => {
                                 return result.find(ele => ele.id === element);
@@ -95,7 +95,7 @@ const dichvu = http.createServer((req, res) => {
                             //     return "abc";
                             // });
                             let arrPostNew = [];
-                            for (let index = Number(url.slice(13)) * 10 - 10; index <= Number(url.slice(13)) * 10 - 1; index++) {
+                            for (let index = Number(url.slice(18)) * 10 - 10; index <= Number(url.slice(18)) * 10 - 1; index++) {
                                 if (typeof arrPost[index] === 'object' && arrPost[index] !== null) {
                                     arrPostNew[arrPostNew.length] = arrPost[index];
                                     continue;
