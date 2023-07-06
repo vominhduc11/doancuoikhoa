@@ -12,8 +12,6 @@ const mongo_db = require("mongodb");
 const MongoClient = mongo_db.MongoClient;
 const dbName = 'js279';
 const uri = `mongodb+srv://hv:vominhduc123@cluster0.zssl6ez.mongodb.net/test`;
-let arrPost = [];
-let count = 0;
 function shuffleArray(s, e) {
     const array = []
     for (let index = s; index <= e; index++) {
@@ -26,6 +24,8 @@ function shuffleArray(s, e) {
     }
     return array;
 }
+let arrPost = [];
+// console.log(arrPost);
 
 // Xây dựng Service
 const dichvu = http.createServer((req, res) => {
@@ -39,7 +39,7 @@ const dichvu = http.createServer((req, res) => {
         if (url == "/api/discover") {
             MongoClient.connect(uri)
                 .then(client => {
-                    client.db(dbName).collection("discover").find().limit(10).toArray()
+                    client.db(dbName).collection("discover").find().toArray()
                         .then(result => {
                             kq = JSON.stringify(result);
                             client.close();
@@ -54,8 +54,7 @@ const dichvu = http.createServer((req, res) => {
                     console.log(err);
                 })
         }
-        else if (url.slice(0, 10) == "/api/posts" && count === 0) {
-            count++;
+        else if (url.slice(0, 10) == "/api/postsFirst") {
             // console.log(shuffleArray(Number(url.slice(13)), Number(url.slice(13)) + 10));
             // { id: { $gte: Number(url.slice(13)), $lt: Number(url.slice(13)) + 10 } }
             MongoClient.connect(uri)
@@ -117,7 +116,7 @@ const dichvu = http.createServer((req, res) => {
                 })
 
         }
-        else if (url.slice(0, 10) == "/api/posts" && count !== 0) {
+        else if (url.slice(0, 10) == "/api/posts") {
             let arrPostNew = [];
             for (let index = Number(url.slice(13)) * 10 - 10; index <= Number(url.slice(13)) * 10 - 1; index++) {
                 if (typeof arrPost[index] === 'object' && arrPost[index] !== null) {
@@ -137,5 +136,3 @@ const dichvu = http.createServer((req, res) => {
 dichvu.listen(port, () => {
     console.log(`Server Run.. http://localhost:${port}`)
 })
-
-
