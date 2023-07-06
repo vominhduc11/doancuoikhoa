@@ -25,8 +25,6 @@ function shuffleArray(s, e) {
     return array;
 }
 let arrPost = [];
-// console.log(arrPost);
-
 // Xây dựng Service
 const dichvu = http.createServer((req, res) => {
     let method = req.method;
@@ -61,8 +59,8 @@ const dichvu = http.createServer((req, res) => {
                 .then(client => {
                     client.db(dbName).collection("user").find().toArray()
                         .then(result => {
-
-                            // const array = shuffleArray(Number(url.slice(18)), Number(url.slice(18)) + 9);
+                            arrPost = [];
+                            // const array = shuffleArray(Number(url.slice(13)), Number(url.slice(13)) + 9);
                             const array = shuffleArray(1, result.length);
                             let array1 = array.map(element => {
                                 return result.find(ele => ele.id === element);
@@ -84,16 +82,6 @@ const dichvu = http.createServer((req, res) => {
                                 }
                             });
 
-
-                            // arrPost = arrPost.map((element, index) => {
-                            //     // if (element.id >= Number(url.slice(13)) * 10 - 9 && element.id < Number(url.slice(13)) + 10) {
-                            //     //     return element;
-                            //     // }
-                            //     if (typeof element === 'object' && element !== null && (index + 1) >= Number(url.slice(13)) * 10 - 9 && (index + 1) <= Number(url.slice(13)) * 10) {
-                            //         return element;
-                            //     }
-                            //     return "abc";
-                            // });
                             let arrPostNew = [];
                             for (let index = Number(url.slice(18)) * 10 - 10; index <= Number(url.slice(18)) * 10 - 1; index++) {
                                 if (typeof arrPost[index] === 'object' && arrPost[index] !== null) {
