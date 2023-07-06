@@ -118,6 +118,33 @@ const dichvu = http.createServer((req, res) => {
             res.writeHead(200, { "Content-Type": "text/json;charset=utf-8" });
             res.end(kq);
         }
+        else if (url.slice(0, 11) == "/api/recAcc") {
+            MongoClient.connect(uri)
+                .then(client => {
+                    client.db(dbName).collection("user").find().limit(30).toArray()
+                        .then(result => {
+                            result = result.map(ele => {
+                                delete ele.post;
+                                delete ele.following;
+                                ele.follow = ele.followers;
+                                ele.like = ele.likes;
+                                delete ele.followers;
+                                delete ele.likes;
+                                return ele;
+                            })
+                            kq = JSON.stringify(result);
+                            client.close();
+                            res.writeHead(200, { "Content-Type": "text/json;charset=utf-8" });
+                            res.end(kq);
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        })
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
     }
 })
 // Dịch vụ lắng nghe tại cổng nào
