@@ -60,12 +60,7 @@ const dichvu = http.createServer((req, res) => {
                     client.db(dbName).collection("user").find().toArray()
                         .then(result => {
                             arrPost = [];
-                            // const array = shuffleArray(Number(url.slice(13)), Number(url.slice(13)) + 9);
-                            const array = shuffleArray(1, result.length);
-                            let array1 = array.map(element => {
-                                return result.find(ele => ele.id === element);
-                            });
-                            array1 = array1.forEach(element => {
+                            result.forEach(element => {
                                 if (element.hasOwnProperty("post")) {
                                     element.post.forEach(ele => {
                                         ele = {
@@ -81,6 +76,12 @@ const dichvu = http.createServer((req, res) => {
                                     })
                                 }
                             });
+
+                            const array = shuffleArray(1, arrPost.length);
+                            arrPost = array.map(element => {
+                                return arrPost.find(ele => ele.id === element);
+                            });
+
 
                             let arrPostNew = [];
                             for (let index = Number(url.slice(18)) * 10 - 10; index <= Number(url.slice(18)) * 10 - 1; index++) {
@@ -114,7 +115,6 @@ const dichvu = http.createServer((req, res) => {
                 continue;
             }
             kq = JSON.stringify(arrPostNew);
-            // client.close();
             res.writeHead(200, { "Content-Type": "text/json;charset=utf-8" });
             res.end(kq);
         }
