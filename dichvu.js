@@ -79,10 +79,9 @@ const dichvu = http.createServer((req, res) => {
 
                             const array = shuffleArray(1, arrPost.length);
                             arrPost = array.map(element => {
-                                return arrPost.find(ele => ele.id === element);
+                                // return arrPost.find(ele => ele.id === element);
+                                return arrPost[element - 1];
                             });
-
-
                             let arrPostNew = [];
                             for (let index = Number(url.slice(18)) * 10 - 10; index <= Number(url.slice(18)) * 10 - 1; index++) {
                                 if (typeof arrPost[index] === 'object' && arrPost[index] !== null) {
