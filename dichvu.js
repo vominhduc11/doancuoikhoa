@@ -144,6 +144,46 @@ const dichvu = http.createServer((req, res) => {
                     console.log(err);
                 })
         }
+        else if (url.slice(0, 15) == "/api/userSearch") {
+            MongoClient.connect(uri)
+                .then(client => {
+                    client.db(dbName).collection("user").find().toArray()
+                        .then(result => {
+                            result = result.map(ele => {
+                                delete ele.post;
+                                delete ele.id;
+                                delete ele.following;
+                                delete ele.followers;
+                                delete ele.likes;
+                                delete ele._id;
+                                return ele;
+                            })
+                            let newResult = []
+                            let count = 0;
+                            for (let index = 0; index < result.length; index++) {
+                                if (result[index].name.toLowerCase().includes(url.slice(18).toLowerCase())) {
+                                    newResult[newResult.length] = result[index];
+                                    count++;
+                                    if (count == 5) {
+                                        break;
+                                    }
+                                    continue;
+                                }
+                                continue;
+                            }
+                            kq = JSON.stringify(newResult);
+                            client.close();
+                            res.writeHead(200, { "Content-Type": "text/json;charset=utf-8" });
+                            res.end(kq);
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        })
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
     }
 })
 // Dịch vụ lắng nghe tại cổng nào
