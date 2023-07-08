@@ -158,7 +158,7 @@ const dichvu = http.createServer((req, res) => {
                                 delete ele._id;
                                 return ele;
                             })
-                            let newResult = []
+                            let newResult = [];
                             let count = 0;
                             for (let index = 0; index < result.length; index++) {
                                 if (result[index].name.toLowerCase().includes(url.slice(18).toLowerCase())) {
@@ -172,6 +172,39 @@ const dichvu = http.createServer((req, res) => {
                                 continue;
                             }
                             kq = JSON.stringify(newResult);
+                            client.close();
+                            res.writeHead(200, { "Content-Type": "text/json;charset=utf-8" });
+                            res.end(kq);
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        })
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
+        else if (url.slice(0, 9) == "/api/user") {
+            MongoClient.connect(uri)
+                .then(client => {
+                    client.db(dbName).collection("user").find().toArray()
+                        .then(result => {
+                            result = result.map(ele => {
+                                if (ele.hasOwnProperty("post")) {
+                                    ele.posts = ele.post;
+                                    delete ele.post;
+                                    delete ele._id;
+                                    ele.posts.forEach(post => {
+                                        delete post.music;
+                                        delete post.userLike;
+                                        delete post.userComment;
+                                        delete post.userShare;
+                                    })
+                                    return ele;
+                                }
+                            })
+                            result = result.find(ele => ele.name === url.slice(12))
+                            kq = JSON.stringify(result);
                             client.close();
                             res.writeHead(200, { "Content-Type": "text/json;charset=utf-8" });
                             res.end(kq);
